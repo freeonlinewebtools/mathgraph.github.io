@@ -411,6 +411,7 @@ body.sidebar-collapsed #sidebar {
     --smart-fence-color: var(--accent);
     --contains-highlight-background-color: transparent;
     --placeholder-color: var(--text-placeholder);
+    font-size: 20px;
     padding: 8px 12px;
     min-height: 38px;
     line-height: 1.3;
