@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathGraph — Advanced Math Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ============ Expression Sidebar ============ -->
+    <aside id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">∑</span>
+                <span class="logo-text">MathGraph</span>
+            </div>
+            <div class="header-buttons">
+                <button id="btn-reference" class="icon-btn" title="Function Reference">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </button>
+                <button id="btn-settings" class="icon-btn" title="Settings">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </button>
+                <button id="btn-theme" class="icon-btn" title="Toggle Theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Graph Mode Tabs -->
+        <div class="graph-mode-tabs">
+            <button class="graph-mode-tab active" data-mode="cartesian" title="Cartesian y=f(x)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="21" x2="21" y2="21"/><line x1="3" y1="3" x2="3" y2="21"/><path d="M4 16c4-8 8-4 12-12"/></svg>
+                <span>Cartesian</span>
+            </button>
+            <button class="graph-mode-tab" data-mode="polar" title="Polar r=f(θ)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+                <span>Polar</span>
+            </button>
+            <button class="graph-mode-tab" data-mode="complex" title="Complex plane z → f(z)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/><text x="14" y="10" font-size="8" fill="currentColor">i</text></svg>
+                <span>Complex</span>
+            </button>
+            <button class="graph-mode-tab" data-mode="parametric" title="Parametric (x(t), y(t))">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20C8 4 16 20 20 4"/></svg>
+                <span>Param</span>
+            </button>
+        </div>
+
+        <!-- Computation Panel -->
+        <div class="compute-panel">
+            <div class="compute-input-wrap">
+                <span class="compute-prompt">&gt;</span>
+                <math-field id="compute-input" class="compute-input compute-math-field" virtual-keyboard-mode="onfocus" smart-mode="false" placeholder="Evaluate expression..."></math-field>
+            </div>
+            <div class="compute-hint">LaTeX: \frac{1}{x}, x^2, \sqrt{x}, deriv(x^3,x)</div>
+            <div id="compute-result" class="compute-result hidden"></div>
+        </div>
+
+        <div class="quick-actions">
+            <button id="btn-clear-all" class="quick-btn" title="Clear expressions">Clear</button>
+            <button id="btn-export" class="quick-btn" title="Export graph as PNG">Export PNG</button>
+        </div>
+
+        <div id="expr-list" class="expr-list">
+            <!-- Expression items added dynamically -->
+        </div>
+
+        <button id="btn-add" class="btn-add">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Add Expression</span>
+        </button>
+
+        <!-- Presets -->
+        <div class="presets-section">
+            <div class="presets-header" id="presets-toggle">
+                <span>Examples</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="preset-search-wrap">
+                <input type="text" id="preset-search" class="preset-search" placeholder="Search examples..." spellcheck="false" autocomplete="off">
+            </div>
+            <div id="presets-list" class="presets-list hidden">
+                <!-- Number Theory -->
+                <div class="preset-category-label">Number Theory</div>
+                <button class="preset-btn" data-expr="primepi(x)">π(x) — Prime Counting</button>
+                <button class="preset-btn" data-expr="totient(x)">φ(x) — Euler's Totient</button>
+                <button class="preset-btn" data-expr="mobius(x)">μ(x) — Möbius</button>
+                <button class="preset-btn" data-expr="sigma(x)">σ(x) — Sum of Divisors</button>
+                <button class="preset-btn" data-expr="omega(x)">ω(x) — Prime Factors</button>
+                <button class="preset-btn" data-expr="mertens(x)">M(x) — Mertens</button>
+                <button class="preset-btn" data-expr="mangoldt(x)">Λ(x) — Von Mangoldt</button>
+                <button class="preset-btn" data-expr="collatz(x)">Collatz Steps</button>
+                <button class="preset-btn" data-expr="x/ln(x)" data-expr2="primepi(x)">PNT: x/ln(x) vs π(x)</button>
+                <button class="preset-btn" data-expr="li(x)" data-expr2="primepi(x)">Li(x) vs π(x)</button>
+
+                <!-- Calculus -->
+                <div class="preset-category-label">Calculus</div>
+                <button class="preset-btn" data-expr="sin(x)" data-expr2="deriv(sin(x))">sin(x) &amp; derivative</button>
+                <button class="preset-btn" data-expr="x^3 - 3*x" data-expr2="deriv(x^3 - 3*x)">Cubic &amp; derivative</button>
+                <button class="preset-btn" data-expr="integral(sin(t), 0, x)">∫ sin(t) dt from 0 to x</button>
+                <button class="preset-btn" data-expr="sum(1/n^2, n, 1, x)">Σ 1/n² (→ π²/6)</button>
+                <button class="preset-btn" data-expr="prod((1-1/prime(n)^2), n, 1, x)">Π (1-1/p²) (→ 6/π²)</button>
+                <button class="preset-btn" data-expr="sum((-1)^(n+1)/n, n, 1, x)">Alternating harmonic</button>
+
+                <!-- Special Functions -->
+                <div class="preset-category-label">Special Functions</div>
+                <button class="preset-btn" data-expr="gamma(x)">Γ(x) — Gamma</button>
+                <button class="preset-btn" data-expr="zeta(x)">ζ(x) — Riemann Zeta</button>
+                <button class="preset-btn" data-expr="erf(x)">erf(x) — Error Function</button>
+                <button class="preset-btn" data-expr="besselj(0, x)">J₀(x) — Bessel</button>
+                <button class="preset-btn" data-expr="airy(x)">Ai(x) — Airy</button>
+                <button class="preset-btn" data-expr="lambertw(x)">W(x) — Lambert W</button>
+                <button class="preset-btn" data-expr="si(x)">Si(x) — Sine Integral</button>
+                <button class="preset-btn" data-expr="sinc(x)">sinc(x)</button>
+
+                <!-- Sequences -->
+                <div class="preset-category-label">Sequences</div>
+                <button class="preset-btn" data-expr="fibonacci(x)">F(n) — Fibonacci</button>
+                <button class="preset-btn" data-expr="partition(x)">p(n) — Partitions</button>
+                <button class="preset-btn" data-expr="catalan(x)">Catalan Numbers</button>
+                <button class="preset-btn" data-expr="bernoulli(x)">Bernoulli Numbers</button>
+                <button class="preset-btn" data-expr="bell(x)">Bell Numbers</button>
+
+                <!-- Polar -->
+                <div class="preset-category-label">Polar Curves</div>
+                <button class="preset-btn" data-expr="r = 2*sin(3*theta)" data-mode="polar">Rose (3 petals)</button>
+                <button class="preset-btn" data-expr="r = 1 + cos(theta)" data-mode="polar">Cardioid</button>
+                <button class="preset-btn" data-expr="r = theta/3" data-mode="polar">Archimedean Spiral</button>
+                <button class="preset-btn" data-expr="r = 2*cos(2*theta)" data-mode="polar">Four-leaf clover</button>
+
+                <!-- Complex -->
+                <div class="preset-category-label">Complex Plane</div>
+                <button class="preset-btn" data-expr="z^2" data-mode="complex">z² — Squaring</button>
+                <button class="preset-btn" data-expr="1/z" data-mode="complex">1/z — Inversion</button>
+                <button class="preset-btn" data-expr="sin(z)" data-mode="complex">sin(z)</button>
+                <button class="preset-btn" data-expr="z^3 - 1" data-mode="complex">z³ - 1</button>
+                <button class="preset-btn" data-expr="exp(z)" data-mode="complex">e^z</button>
+                <button class="preset-btn" data-expr="gamma(z)" data-mode="complex">Γ(z)</button>
+
+                <!-- Parametric -->
+                <div class="preset-category-label">Parametric</div>
+                <button class="preset-btn" data-expr="(cos(t), sin(t))" data-mode="parametric">Unit Circle</button>
+                <button class="preset-btn" data-expr="(sin(2*t)*cos(t), sin(2*t)*sin(t))" data-mode="parametric">Figure-8</button>
+                <button class="preset-btn" data-expr="(t - sin(t), 1 - cos(t))" data-mode="parametric">Cycloid</button>
+                <button class="preset-btn" data-expr="(cos(t)*(1+cos(5*t)/2), sin(t)*(1+cos(5*t)/2))" data-mode="parametric">Star curve</button>
+
+                <!-- Implicit -->
+                <div class="preset-category-label">Implicit Curves</div>
+                <button class="preset-btn" data-expr="x^2 + y^2 = 4">Circle x²+y²=4</button>
+                <button class="preset-btn" data-expr="x^2/4 + y^2 = 1">Ellipse</button>
+                <button class="preset-btn" data-expr="x^2 - y^2 = 1">Hyperbola</button>
+                <button class="preset-btn" data-expr="sin(x*y) = cos(x+y)">sin(xy)=cos(x+y)</button>
+                <button class="preset-btn" data-expr="x^3 + y^3 = 3*x*y">Folium of Descartes</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ============ Main Graph Area ============ -->
+    <main id="graph-area">
+        <canvas id="graph-canvas"></canvas>
+
+        <div id="coords-display" class="coords-display hidden">
+            <span id="coords-text"></span>
+        </div>
+
+        <div id="point-tooltip" class="point-tooltip hidden"></div>
+
+        <!-- Graph mode indicator -->
+        <button id="btn-sidebar-toggle" class="sidebar-toggle" title="Toggle Sidebar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div id="mode-indicator" class="mode-indicator">Cartesian</div>
+
+        <!-- Zoom Controls -->
+        <div class="zoom-controls">
+            <button id="btn-zoom-in" class="zoom-btn" title="Zoom In">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <button id="btn-zoom-out" class="zoom-btn" title="Zoom Out">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <button id="btn-zoom-reset" class="zoom-btn" title="Reset View">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+        </div>
+
+        <!-- Plot Mode Toggle -->
+        <div class="plot-mode-toggle">
+            <button id="btn-mode-continuous" class="mode-btn active" title="Continuous">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c2-4 4-8 8-4s6 0 8-4s4 0 6 4"/></svg>
+            </button>
+            <button id="btn-mode-discrete" class="mode-btn" title="Discrete Points">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="4" cy="12" r="2"/><circle cx="10" cy="8" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="22" cy="6" r="2"/></svg>
+            </button>
+            <button id="btn-mode-bar" class="mode-btn" title="Bar Chart">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="10" width="4" height="10"/><rect x="10" y="5" width="4" height="15"/><rect x="17" y="8" width="4" height="12"/></svg>
+            </button>
+        </div>
+    </main>
+
+    <!-- ============ Function Reference Panel ============ -->
+    <div id="reference-panel" class="reference-panel hidden">
+        <div class="ref-header">
+            <h2>Function Reference</h2>
+            <button id="btn-close-ref" class="icon-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="ref-content">
+            <div class="ref-category">
+                <h3>Prime &amp; Number Theory</h3>
+                <div class="ref-item"><code>isprime(n)</code><p>1 if n is prime, else 0</p></div>
+                <div class="ref-item"><code>prime(n)</code><p>Nth prime: prime(1)=2, prime(2)=3...</p></div>
+                <div class="ref-item"><code>primepi(x)</code><p>Prime counting π(x) — primes ≤ x</p></div>
+                <div class="ref-item"><code>nextprime(n) / prevprime(n)</code><p>Adjacent primes</p></div>
+                <div class="ref-item"><code>primorial(n) / primegap(n)</code><p>Product of primes ≤ n / Gap to next prime</p></div>
+                <div class="ref-item"><code>totient(n)</code><p>Euler's totient φ(n)</p></div>
+                <div class="ref-item"><code>mobius(n)</code><p>Möbius function μ(n)</p></div>
+                <div class="ref-item"><code>sigma(n) / sigma(n,k)</code><p>Sum of divisors σ(n) / σ_k(n)</p></div>
+                <div class="ref-item"><code>numdiv(n)</code><p>Number of divisors d(n)</p></div>
+                <div class="ref-item"><code>liouville(n) / mangoldt(n)</code><p>Liouville λ(n) / Von Mangoldt Λ(n)</p></div>
+                <div class="ref-item"><code>omega(n) / bigomega(n)</code><p>Distinct / total prime factors</p></div>
+                <div class="ref-item"><code>mertens(n)</code><p>Mertens M(n) = Σ μ(k)</p></div>
+                <div class="ref-item"><code>radical(n)</code><p>Product of distinct prime factors</p></div>
+                <div class="ref-item"><code>collatz(n)</code><p>Steps to reach 1 in Collatz sequence</p></div>
+                <div class="ref-item"><code>digitsum(n) / digitalroot(n)</code><p>Sum of digits / Digital root</p></div>
+                <div class="ref-item"><code>isperfect(n) / isabundant(n)</code><p>Perfect/abundant number tests</p></div>
+            </div>
+
+            <div class="ref-category">
+                <h3>Calculus</h3>
+                <div class="ref-item"><code>deriv(expr)</code> or <code>diff(expr)</code><p>Numerical derivative d/dx. Example: deriv(x^3) graphs 3x²</p></div>
+                <div class="ref-item"><code>diff2(expr)</code> or <code>deriv2(expr)</code><p>Second derivative d²/dx²</p></div>
+                <div class="ref-item"><code>integral(expr, a, b)</code><p>Definite integral ∫ₐᵇ. Use x as upper bound to graph: integral(sin(t), 0, x)</p></div>
+                <div class="ref-item"><code>sum(expr, var, start, end)</code><p>Summation Σ. Example: sum(1/n^2, n, 1, x)</p></div>
+                <div class="ref-item"><code>prod(expr, var, start, end)</code><p>Product Π. Example: prod(n, n, 1, x) = x!</p></div>
+            </div>
+
+            <div class="ref-category">
+                <h3>Special Functions</h3>
+                <div class="ref-item"><code>gamma(x) / lngamma(x)</code><p>Gamma Γ(x) and log-gamma</p></div>
+                <div class="ref-item"><code>beta(a,b)</code><p>Beta function B(a,b)</p></div>
+                <div class="ref-item"><code>zeta(s)</code><p>Riemann zeta ζ(s)</p></div>
+                <div class="ref-item"><code>erf(x) / erfc(x)</code><p>Error function and complement</p></div>
+                <div class="ref-item"><code>lambertw(x)</code><p>Lambert W function</p></div>
+                <div class="ref-item"><code>besselj(n,x) / bessely(n,x)</code><p>Bessel functions J_n, Y_n</p></div>
+                <div class="ref-item"><code>airy(x)</code><p>Airy function Ai(x)</p></div>
+                <div class="ref-item"><code>ei(x) / si(x) / ci(x)</code><p>Exponential, sine, cosine integrals</p></div>
+                <div class="ref-item"><code>fresnels(x) / fresnelc(x)</code><p>Fresnel S and C integrals</p></div>
+                <div class="ref-item"><code>digamma(x) / polygamma(m,x)</code><p>Digamma and polygamma</p></div>
+                <div class="ref-item"><code>sinc(x) / heaviside(x)</code><p>Sinc and step functions</p></div>
+                <div class="ref-item"><code>li(x) / harmonic(n)</code><p>Log integral and harmonic numbers</p></div>
+            </div>
+
+            <div class="ref-category">
+                <h3>Sequences</h3>
+                <div class="ref-item"><code>fibonacci(n) / lucas(n)</code><p>Fibonacci and Lucas numbers</p></div>
+                <div class="ref-item"><code>catalan(n) / bell(n)</code><p>Catalan and Bell numbers</p></div>
+                <div class="ref-item"><code>partition(n)</code><p>Integer partition p(n)</p></div>
+                <div class="ref-item"><code>bernoulli(n)</code><p>Bernoulli numbers</p></div>
+                <div class="ref-item"><code>stirling1(n,k) / stirling2(n,k)</code><p>Stirling numbers</p></div>
+            </div>
+
+            <div class="ref-category">
+                <h3>Trigonometric</h3>
+                <div class="ref-item"><code>sin cos tan sec csc cot</code><p>Standard trig</p></div>
+                <div class="ref-item"><code>asin acos atan asec acsc acot atan2</code><p>Inverse trig</p></div>
+                <div class="ref-item"><code>sinh cosh tanh sech csch coth</code><p>Hyperbolic</p></div>
+                <div class="ref-item"><code>asinh acosh atanh</code><p>Inverse hyperbolic</p></div>
+            </div>
+
+            <div class="ref-category">
+                <h3>Standard Math</h3>
+                <div class="ref-item"><code>ln log log2 log10 logb(base,x)</code><p>Logarithms</p></div>
+                <div class="ref-item"><code>sqrt cbrt nroot(n,x) exp pow</code><p>Roots and powers</p></div>
+                <div class="ref-item"><code>abs sign floor ceil round trunc frac</code><p>Value functions</p></div>
+                <div class="ref-item"><code>min max clamp lerp hypot</code><p>Utility math</p></div>
+                <div class="ref-item"><code>gcd lcm mod binomial factorial</code><p>Discrete math</p></div>
+            </div>
+
+            <div class="ref-category">
+                <h3>Graph Modes</h3>
+                <div class="ref-item"><code>y = f(x)</code><p>Cartesian mode (default)</p></div>
+                <div class="ref-item"><code>r = f(theta)</code><p>Polar mode — uses theta or t variable</p></div>
+                <div class="ref-item"><code>(x(t), y(t))</code><p>Parametric — e.g. (cos(t), sin(t))</p></div>
+                <div class="ref-item"><code>f(x,y) = g(x,y)</code><p>Implicit curves — auto-detected when x and y are both present</p></div>
+                <div class="ref-item"><code>f(z)</code><p>Complex plane — domain coloring. Use z variable.</p></div>
+            </div>
+
+            <div class="ref-category">
+                <h3>Constants</h3>
+                <div class="ref-item">
+                    <code>pi</code> = 3.14159... &nbsp;|&nbsp; <code>e</code> = 2.71828... &nbsp;|&nbsp;
+                    <code>phi</code> = 1.61803... &nbsp;|&nbsp; <code>tau</code> = 6.28318...<br>
+                    <code>eulergamma</code> = 0.57721... &nbsp;|&nbsp; <code>apery</code> = 1.20205...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ Settings Panel ============ -->
+    <div id="settings-panel" class="settings-panel hidden">
+        <div class="ref-header">
+            <h2>Settings</h2>
+            <button id="btn-close-settings" class="icon-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-group">
+                <label>Grid Lines</label>
+                <label class="toggle"><input type="checkbox" id="setting-grid" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="setting-group">
+                <label>Axis Labels</label>
+                <label class="toggle"><input type="checkbox" id="setting-labels" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="setting-group">
+                <label>Minor Grid</label>
+                <label class="toggle"><input type="checkbox" id="setting-minor-grid"><span class="toggle-slider"></span></label>
+            </div>
+            <div class="setting-group">
+                <label>Line Width</label>
+                <input type="range" id="setting-line-width" min="1" max="5" value="2.5" step="0.5">
+            </div>
+            <div class="setting-group">
+                <label>Point Size</label>
+                <input type="range" id="setting-point-size" min="2" max="8" value="4" step="0.5">
+            </div>
+            <div class="setting-group">
+                <label>Sampling Density</label>
+                <select id="setting-density">
+                    <option value="1">Low</option>
+                    <option value="2" selected>Normal</option>
+                    <option value="4">High</option>
+                    <option value="8">Ultra</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ Autocomplete Popup ============ -->
+    <div id="autocomplete" class="autocomplete hidden"></div>
+
+    <script src="vendor/mathlive/mathlive.min.js"></script>
+    <script src="js/math-engine.js"></script>
+    <script src="js/grapher.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
